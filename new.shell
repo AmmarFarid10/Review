@@ -1,0 +1,50 @@
+#!/bin/bash.
+mongod > /dev/null 2>&1 &
+sleep 5
+
+go run main.go > /dev/null 2>&1 &
+
+printf "\nServer starting......\n"
+
+curl -s --location --request POST 'https://ed-5146363240644608.educative.run/reviews/addreview' \
+--header 'token: ' \
+ --data-raw ''  &> log.txt
+
+while :
+do
+   if grep "Your app refused to connect." < log.txt > waste.txt; then
+	   i=1
+curl -s --location --request POST 'https://ed-5146363240644608.educative.run/reviews/addreview' \
+--header 'token: ' \
+ --data-raw ''  &> log.txt
+   else
+	break
+   fi
+
+done
+
+
+printf "\nSending Request\n"
+
+
+value=$(curl -s --location --request POST 'https://ed-5146363240644608.educative.run/users/login' \
+ --data-raw '{
+ "Email":"alice001@gmail.com", 
+ "Password":"Alice123"
+ }') &> waste.txt
+
+
+token=$(echo "$value" | jq '.token')
+
+token1=$(echo "$token" | sed -e 's/^"//' -e 's/"$//')
+echo $token1
+printf "\nSending Request\n"
+curl -s --location --request POST 'https://ed-5146363240644608.educative.run/reviews/addreview' \
+--header "token: $token1" \
+--data-raw '{
+    "review" : Thisisthereiew
+    "Movie_id" : 1
+    "Reviewer_id" : 1
+}'   | jq
+
+
