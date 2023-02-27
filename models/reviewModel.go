@@ -8,8 +8,8 @@ import (
 
 type Reviews struct {
 	Id          primitive.ObjectID `bson:"_id"`
-	Movie_id    *string            `json:"movie_id" validate:"required"`
-	Reviewer_id *string            `json:"reviewer_id" validate:"required"`
+	Movie_id    int            `json:"movie_id"`
+	Reviewer_id int            `json:"reviewer_id"`
 	Review      *string            `json:"review" validate:"required"`
 	Created_at  time.Time          `json:"created_at"`
 	Updated_at  time.Time          `json:"updated_at"`
