@@ -47,6 +47,7 @@ func AddAReview() gin.HandlerFunc {
 		newReview := models.Reviews{
 			Id:          primitive.NewObjectID(),
 			Movie_id:    review.Movie_id,
+			Review_id:   review.Review_id,
 			Reviewer_id: review.Reviewer_id,
 			Review:      review.Review,
 		}
