@@ -87,7 +87,7 @@ func Signup() gin.HandlerFunc {
 		user.Created_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		user.ID = primitive.NewObjectID()
-		user.User_id = user.ID.Hex()
+		user.User_id = user.ID
 		//Sign details to token
 		token, refreshToken, _ := helper.GenerateAllTokens(
 			*user.Email,
@@ -118,7 +118,7 @@ func Signup() gin.HandlerFunc {
 		//To add a new user to the database
 		newUser := models.User{
 			ID:            user.ID,
-			User_id:       user.ID.Hex(),
+			User_id:       user.ID,
 			Name:          user.Name,
 			Username:      user.Username,
 			Email:         user.Email,
