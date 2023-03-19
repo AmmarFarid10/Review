@@ -2,21 +2,20 @@ package controllers
 
 import (
 	"context"
-	//"log"
 	"net/http"
 	"shive-app/database"
 	helper "shive-app/helpers"
 	"shive-app/models"
 	"time"
+
 	"github.com/gin-gonic/gin"
-	//"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var reviewCollection *mongo.Collection = database.OpenCollection(database.Client, "review")
 
-//Add  new review
+//Add a new review
 func AddAReview() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := helper.VerifyUserType(c, "USER"); err != nil {
@@ -35,6 +34,7 @@ func AddAReview() gin.HandlerFunc {
 				"Data":    map[string]interface{}{"data": err.Error()}})
 			return
 		}
+
 		//use the validator library to validate required fields
 		if validationErr := validate.Struct(&review); validationErr != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -50,6 +50,8 @@ func AddAReview() gin.HandlerFunc {
 			Review_id:   review.Review_id,
 			Reviewer_id: review.Reviewer_id,
 			Review:      review.Review,
+			Created_at:  time.Now(),
+			Updated_at:  time.Now(),
 		}
 
 		result, err := reviewCollection.InsertOne(ctx, newReview)
@@ -57,14 +59,6 @@ func AddAReview() gin.HandlerFunc {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"Status":  http.StatusBadRequest,
-				"Message": "error",
-				"Data":    map[string]interface{}{"data": err.Error()}})
-			return
-		}
-
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"Status":  http.StatusInternalServerError,
 				"Message": "error",
 				"Data":    map[string]interface{}{"data": err.Error()}})
 			return
