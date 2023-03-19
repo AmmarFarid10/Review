@@ -1,3 +1,22 @@
+
+import (
+        "context"
+        "log"
+        "net/http"
+        "time"
+
+        "github.com/genesdemon/golang-jwt-project/database"
+        helper "github.com/genesdemon/golang-jwt-project/helpers"
+        "github.com/genesdemon/golang-jwt-project/models"
+        "github.com/gin-gonic/gin"
+        "go.mongodb.org/mongo-driver/bson"
+        "go.mongodb.org/mongo-driver/bson/primitive"
+        "go.mongodb.org/mongo-driver/mongo"
+)
+
+var reviewCollection *mongo.Collection = database.OpenCollection(database.Client, "review")
+
+//Add  new review
 func AddAReview() gin.HandlerFunc {
         return func(c *gin.Context) {
                 if err := helper.CheckUserType(c, "USER"); err != nil {
@@ -30,7 +49,7 @@ func AddAReview() gin.HandlerFunc {
                         Movie_id:    review.Movie_id,
                         Reviewer_id: review.Reviewer_id,
                         Review:      review.Review,
-			Review_id: review.Review_id,
+			Review_id:   review.review_id,
                 }
 
                 result, err := reviewCollection.InsertOne(ctx, newReview)
