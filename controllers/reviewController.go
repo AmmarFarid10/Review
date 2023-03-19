@@ -48,7 +48,7 @@ func AddAReview() gin.HandlerFunc {
 			Id:          primitive.NewObjectID(),
 			Movie_id:    review.Movie_id,
 			Review_id:   review.Review_id,
-			Reviewer_id: review.Reviewer_id.Hex(),
+			Reviewer_id: review.Reviewer_id,
 			Review:      review.Review,
 		}
 
