@@ -49,7 +49,7 @@ func AddAReview() gin.HandlerFunc {
 			Movie_id:    review.Movie_id,
 			Reviewer_id: review.Reviewer_id,
 			Review:      review.Review,
-			review_id: review.review_id,
+			Review_id: review.Review_id,
 		}
 
 		result, err := reviewCollection.InsertOne(ctx, newReview)
